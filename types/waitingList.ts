@@ -14,4 +14,4 @@ interface WaitingList {
     entries: Entries[];
 }
 
-export type { WaitingList };
+export type { WaitingList, Entries };
