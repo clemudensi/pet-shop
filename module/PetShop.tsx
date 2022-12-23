@@ -13,11 +13,15 @@ import {
   PlusIcon,
   TableList,
   TableWrapper,
-  ModalWrapper,
+  ModalWrapper, ContainerFlex,
 } from 'components';
-import { useGetWaitingList } from 'hooks';
+import { useGetWaitingList, useDebounced } from 'hooks';
 import { Entry } from 'types';
 import { generateUuid, sortByArrival, arrangeDataByEntry } from 'utils';
+import { useSearchContext } from 'context';
+import { Searchbar } from '../components/Search/SearchBar';
+import { ServicedEntry } from '../enums';
+import { Button } from 'flowbite-react';
 
 export const PetShop = () => {
   const [entry, setEntry] = useState({
@@ -28,9 +32,13 @@ export const PetShop = () => {
     requestedService: '',
   });
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [petShopEntries, setPetShopEntries] = useState<Entry[]>([])
-  const [arrangeEntries, setArrangeEntries] = useState<Entry[]>([])
-  const waitingList = useGetWaitingList();
+  const [petShopEntries, setPetShopEntries] = useState<Entry[]>([]);
+  const [arrangeEntries, setArrangeEntries] = useState<Entry[]>([]);
+
+  const { search } = useSearchContext();
+  const inputDebounced = useDebounced(search, 700);
+  const waitingList = useGetWaitingList(inputDebounced);
+
   const { data } = waitingList;
 
   const handleOnchange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -112,7 +120,7 @@ export const PetShop = () => {
 
   useEffect(() => {
     if (data) {
-      setPetShopEntries(data.entries);
+      setPetShopEntries(sortByArrival(data));
       setArrangeEntries(arrangeDataByEntry(petShopEntries));
     }
   }, [data]);
@@ -121,9 +129,35 @@ export const PetShop = () => {
     setArrangeEntries(arrangeDataByEntry(petShopEntries));
   }, [petShopEntries]);
 
+  const handleFilterReservation = (filterType: string) => {
+    switch (filterType) {
+      case ServicedEntry.ALL:
+        setPetShopEntries(data && sortByArrival(data) || []);
+        break;
+      case ServicedEntry.SERVICED:
+        setPetShopEntries(data && sortByArrival(data?.filter(e => e.serviced)) || []);
+        break;
+      case ServicedEntry.UNSERVICED:
+        setPetShopEntries(data && sortByArrival(data?.filter(e => !e.serviced)) || []);
+        break;
+      default:
+        return;
+    }
+  }
+
   return (
     <>
-      <Container width={'w-4/5'}>
+      <ContainerFlex>
+        <Searchbar />
+        <Button.Group>
+          {
+            Object.values(ServicedEntry).map(entry =>
+              <Button key={entry} color="gray" onClick={() => handleFilterReservation(entry)}>{entry}</Button>
+            )
+          }
+        </Button.Group>
+      </ContainerFlex>
+      <>
         <ModalWrapper
           onClose={onClose} 
           onClick={onClick} 
@@ -150,7 +184,7 @@ export const PetShop = () => {
         <CenterItems padding="3rem">
           <PlusIcon width={72} height={72} hoverColor="green" color="#2563eb" onClick={onClick} />
         </CenterItems>
-      </Container>
+      </>
     </>
   )
 };

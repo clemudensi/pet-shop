@@ -1,6 +1,8 @@
 import Head from 'next/head'
 import { Inter } from '@next/font/google'
 import { PetShop } from '../module';
+import { SearchReservationProvider } from 'context';
+import { Container } from 'components';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -15,7 +17,11 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <PetShop />
+      <Container width="w-4/5">
+        <SearchReservationProvider>
+          <PetShop />
+        </SearchReservationProvider>
+      </Container>
     </>
   )
 }

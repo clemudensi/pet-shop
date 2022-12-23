@@ -17,7 +17,7 @@ export const DefaultButton = tw.button`
 
 export const Container = styled.div(({ width }: divWidth) => [
   tw`${width ? width : 'w-full'}`,
-  tw`px-36 py-12`
+  tw`px-48 py-12`
 ]);
 
 export const Anchor = tw.a`
@@ -87,3 +87,5 @@ export const DropdownSelect = tw.select`
   dark:border-gray-700 focus:outline-none 
   focus:ring-0 focus:border-gray-200
 `;
+
+export const ContainerFlex = tw.div`flex my-6`;

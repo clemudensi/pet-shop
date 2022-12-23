@@ -4,7 +4,7 @@ export const TableContainer = styled.div`
   ${tw`
     overflow-x-auto relative shadow-md sm:rounded-lg
   `}
-  height: 80vh;
+  max-height: 80vh;
   overflow-y: scroll;
 `;
 
