@@ -2,7 +2,12 @@ import { FC } from 'react';
 import { Modal } from 'flowbite-react';
 import { ModalProps } from 'types';
 
-export const ModalForm: FC<ModalProps> = ({ children, isModalOpen, onClick, onClose }) => {
+export const ModalWrapper: FC<ModalProps> = ({
+  children,
+  isModalOpen,
+  onClose,
+  title
+}) => {
   return (
     <>
       <Modal
@@ -10,7 +15,7 @@ export const ModalForm: FC<ModalProps> = ({ children, isModalOpen, onClick, onCl
         onClose={onClose}
       >
         <Modal.Header>
-          Add a Reservation
+          {title}
         </Modal.Header>
         <Modal.Body>
           {children}

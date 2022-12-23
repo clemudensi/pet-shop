@@ -1,7 +1,11 @@
-import tw from 'twin.macro';
+import tw, { styled } from 'twin.macro';
 
-export const TableContainer = tw.div`
-  overflow-x-auto relative shadow-md sm:rounded-lg
+export const TableContainer = styled.div`
+  ${tw`
+    overflow-x-auto relative shadow-md sm:rounded-lg
+  `}
+  height: 80vh;
+  overflow-y: scroll;
 `;
 
 export const Table = tw.table`
@@ -17,11 +21,10 @@ export const HeadRow = tw.tr``;
 
 export const HeadData = tw.th`py-6 px-6`;
 
-export const RowData = tw.tr`
-  bg-white border-b dark:bg-gray-800 
-  dark:border-gray-700 hover:bg-gray-50 
-  dark:hover:bg-gray-600
-`;
+export const RowData = styled.tr(({ isServiced }: {isServiced: boolean}) => [
+  tw`bg-white border-b dark:border-gray-700 hover:bg-gray-50`,
+  isServiced ? tw`bg-neutral-300 hover:border-blue-500 hover:bg-neutral-300` : tw`dark:bg-gray-800 dark:hover:bg-gray-600`
+]);
 
 export const TableBody = tw.tbody``;
 

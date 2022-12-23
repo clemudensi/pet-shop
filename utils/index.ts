@@ -32,8 +32,8 @@ export const arrangeDataByEntry = (entries: Entry[]): Entry[] => {
   const addEntry = (i: number, entries: Entry[]) => {
     if (i < entries.length - 1) {
       const lastItem = arrangedEntry[arrangedEntry.length - 1];
-      const newEntry = entries.find(e => lastItem.nextEntryId === e.id) as Entry;
-      arrangedEntry.push(newEntry);
+      const newEntry = lastItem && entries.find(e => lastItem.nextEntryId === e.id) as Entry;
+      newEntry && arrangedEntry.push(newEntry);
       addEntry(i+1, entries)
     }
   }

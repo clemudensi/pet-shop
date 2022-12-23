@@ -13,7 +13,7 @@ import {
   PlusIcon,
   TableList,
   TableWrapper,
-  ModalForm
+  ModalWrapper,
 } from 'components';
 import { useGetWaitingList } from 'hooks';
 import { Entry } from 'types';
@@ -90,6 +90,26 @@ export const PetShop = () => {
     });
   }, [petShopEntries, entry, arrangeEntries]);
 
+  const handleRemoveEntry = (id: string) => {
+    const entries = petShopEntries.filter(e => e.id !== id);
+    setPetShopEntries(entries)
+  }
+
+  const handleServiceEntry = useCallback((id: string) => {
+    const servicedEntry = petShopEntries.map(item => {
+      if (item.id === id) {
+        return {
+          ...item,
+          serviced: !item.serviced,
+        };
+      } else {
+        return item;
+      }
+    });
+
+    setPetShopEntries(servicedEntry);
+  }, [petShopEntries]);
+
   useEffect(() => {
     if (data) {
       setPetShopEntries(data.entries);
@@ -104,16 +124,27 @@ export const PetShop = () => {
   return (
     <>
       <Container width={'w-4/5'}>
-        <ModalForm onClose={onClose} onClick={onClick} isModalOpen={isModalOpen}>
+        <ModalWrapper
+          onClose={onClose} 
+          onClick={onClick} 
+          isModalOpen={isModalOpen} 
+          title="Add a Reservation"
+        >
           <PetShopForm
             handleOnchange={handleOnchange}
             handleAddReservation={handleAddReservation}
             entry={entry}
           />
-        </ModalForm>
+        </ModalWrapper>
         <TableWrapper>
           {
-            petShopEntries && sortByArrival(petShopEntries).map(entry => <TableList {...entry} key={entry.id} />)
+            petShopEntries && sortByArrival(petShopEntries).map(entry =>
+              <TableList 
+                {...entry} key={entry.id} 
+                handleRemoveEntry={handleRemoveEntry}
+                handleServiceEntry={handleServiceEntry}
+              />
+            )
           }
         </TableWrapper>
         <CenterItems padding="3rem">
