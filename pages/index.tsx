@@ -1,10 +1,11 @@
 import Head from 'next/head'
 import { Inter } from '@next/font/google'
-import { Container, PetShopForm } from 'components';
+import { PetShop } from '../module';
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+
   return (
     <>
       <Head>
@@ -14,9 +15,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Container width={'w-4/5'}>
-        <PetShopForm />
-      </Container>
+      <PetShop />
     </>
   )
 }

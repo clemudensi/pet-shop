@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app';
 import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import GlobalStyles from '../styles/global';
 import '../styles/globals.css';
-import '../styles/Home.module.css';
+import 'flowbite/dist/flowbite.css';
 
 export default function App({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient())

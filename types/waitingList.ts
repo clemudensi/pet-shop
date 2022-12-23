@@ -1,17 +1,17 @@
-interface Entries {
-    "id": string;
-    "arrival": string;
-    "owner": string;
-    "puppyName": string;
-    "requestedService": string;
-    "serviced": boolean;
-    "prevEntryId": unknown;
-    "nextEntryId": string;
+interface Entry {
+    id: string;
+    arrival: string;
+    owner: string;
+    puppyName: string;
+    requestedService: string;
+    serviced: boolean;
+    prevEntryId: string | null;
+    nextEntryId: string | null;
 }
 
 interface WaitingList {
     date: string;
-    entries: Entries[];
+    entries: Entry[];
 }
 
-export type { WaitingList, Entries };
+export type { WaitingList, Entry };
