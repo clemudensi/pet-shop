@@ -22,7 +22,7 @@ const useDebounced = <T> (
 const useSearchInput = () => {
     const [search, setSearch] = useState<string|undefined>(undefined);
     const onChange = (e: ChangeEvent<HTMLInputElement>) => setSearch(e.target.value);
-    return { onChange, search };
+    return { onChange, search, setSearch };
 }
 
 export { useDebounced, useSearchInput }

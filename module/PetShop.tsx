@@ -6,22 +6,25 @@ import {
   useMemo,
   useEffect,
 } from 'react';
+import { matchSorter } from 'match-sorter';
 import {
   CenterItems,
-  Container,
   PetShopForm,
   PlusIcon,
   TableList,
   TableWrapper,
-  ModalWrapper, ContainerFlex,
+  ModalWrapper,
+  ContainerFlex,
+  FilterBtn
 } from 'components';
-import { useGetWaitingList, useDebounced } from 'hooks';
+import { useGetWaitingList, useDebounced, useSortTable } from 'hooks';
 import { Entry } from 'types';
 import { generateUuid, sortByArrival, arrangeDataByEntry } from 'utils';
 import { useSearchContext } from 'context';
 import { Searchbar } from '../components/Search/SearchBar';
 import { ServicedEntry } from '../enums';
 import { Button } from 'flowbite-react';
+import { SortingState, Table } from '@tanstack/react-table';
 
 export const PetShop = () => {
   const [entry, setEntry] = useState({
@@ -34,12 +37,16 @@ export const PetShop = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [petShopEntries, setPetShopEntries] = useState<Entry[]>([]);
   const [arrangeEntries, setArrangeEntries] = useState<Entry[]>([]);
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [filterType, setFilterType] = useState<string>('');
 
   const { search } = useSearchContext();
   const inputDebounced = useDebounced(search, 700);
   const waitingList = useGetWaitingList(inputDebounced);
 
   const { data } = waitingList;
+
+  const sortTable: Table<Entry> = petShopEntries && useSortTable(petShopEntries, sorting, setSorting)
 
   const handleOnchange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setEntry(prevState => ({
@@ -129,7 +136,20 @@ export const PetShop = () => {
     setArrangeEntries(arrangeDataByEntry(petShopEntries));
   }, [petShopEntries]);
 
+  useEffect(() => {
+    if (inputDebounced) {
+      setPetShopEntries(
+        matchSorter(
+          petShopEntries,
+          inputDebounced || '',
+          {keys: ['puppyName', 'owner', 'requestedService']}
+        )
+      )
+    }
+  }, [inputDebounced])
+
   const handleFilterReservation = (filterType: string) => {
+    setFilterType(filterType);
     switch (filterType) {
       case ServicedEntry.ALL:
         setPetShopEntries(data && sortByArrival(data) || []);
@@ -152,7 +172,13 @@ export const PetShop = () => {
         <Button.Group>
           {
             Object.values(ServicedEntry).map(entry =>
-              <Button key={entry} color="gray" onClick={() => handleFilterReservation(entry)}>{entry}</Button>
+              <FilterBtn
+                key={entry}
+                selected={entry === filterType}
+                onClick={() => handleFilterReservation(entry)}
+                type="button">
+                {entry}
+              </FilterBtn>
             )
           }
         </Button.Group>
@@ -170,22 +196,24 @@ export const PetShop = () => {
             entry={entry}
           />
         </ModalWrapper>
-        <TableWrapper>
-          {
-            petShopEntries && sortByArrival(petShopEntries).map(entry =>
-              <TableList 
-                {...entry} key={entry.id} 
-                handleRemoveEntry={handleRemoveEntry}
-                handleServiceEntry={handleServiceEntry}
-              />
-            )
-          }
+        <TableWrapper sortTable={sortTable}>
+          <TableList
+            handleRemoveEntry={handleRemoveEntry}
+            handleServiceEntry={handleServiceEntry}
+            sortTable={sortTable}
+          />
         </TableWrapper>
         <CenterItems padding="3rem">
-          <PlusIcon width={72} height={72} hoverColor="green" color="#2563eb" onClick={onClick} />
+          <PlusIcon
+            width={52}
+            height={52}
+            hoverColor="green"
+            color="#2563eb"
+            onClick={onClick}
+            transform={1.1}
+          />
         </CenterItems>
       </>
     </>
   )
 };
-

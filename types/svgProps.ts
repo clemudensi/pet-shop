@@ -8,6 +8,7 @@ interface SVGProps {
   onClick?: () => void;
   className?: string;
   children?: React.ReactElement;
+  transform?: number;
 }
 
 export type { SVGProps };
