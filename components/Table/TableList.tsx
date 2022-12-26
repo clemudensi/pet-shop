@@ -36,7 +36,7 @@ export const TableList: FC<TableListProps> = ({
         .map(row => {
           const { original: {serviced, id} } = row;
           return (
-            <TableBody key={row.id}>
+            <TableBody key={row.id} data-testid="reservation-list">
               <Styled.RowData key={row.id} isServiced={serviced}>
                 {row.getVisibleCells().map((cell: CellProps) => {
                   return (
@@ -54,15 +54,24 @@ export const TableList: FC<TableListProps> = ({
                     hoverColor="green"
                     color={serviced ? 'green' : undefined}
                     onClick={() => handleServiceEntry(id)}
+                    data-testid="serviced"
                   />
-                  <TrashIcon width={16} height={16} hoverColor="red" onClick={() => onClick(row.original)} />
+                  <TrashIcon
+                    width={16} height={16}
+                    hoverColor="red"
+                    onClick={() => onClick(row.original)}
+                    data-testid="delete-entry"
+                  />
                 </Styled.TableData>
               </Styled.RowData>
             </TableBody>
           )
         })}
       <ModalWrapper isModalOpen={isModalOpen} onClose={onClose}>
-        <DeleteDialog entryId={entryItem.id} handleClose={onClose} handleDelete={handleDelete} puppyName={entryItem.puppyName} />
+        <DeleteDialog
+          entryId={entryItem.id} handleClose={onClose}
+          handleDelete={handleDelete} puppyName={entryItem.puppyName}
+        />
       </ModalWrapper>
     </>
   )

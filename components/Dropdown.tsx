@@ -12,7 +12,7 @@ interface DropdownProps {
 export const DropdownItem = ({items, title, onChange, value}: DropdownProps) => {
   return (
     <>
-      <DropdownSelect onChange={onChange} name="requestedService" value={value}>
+      <DropdownSelect onChange={onChange} name="requestedService" value={value} data-testid="requestedService">
         <option>{''}</option>
         {
           items.map((list, index) =>

@@ -91,3 +91,5 @@ export const DropdownSelect = tw.select`
 `;
 
 export const ContainerFlex = tw.div`flex my-6`;
+
+export const H2Typography = tw.h2`text-3xl font-bold mb-8`;

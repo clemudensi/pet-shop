@@ -15,7 +15,7 @@ export const DeleteDialog: FC<DeleteDialogProps> = ({
 }) => {
   return (
     <>
-      <Styled.DialogContentSection>
+      <Styled.DialogContentSection data-testid="delete-modal">
         <svg aria-hidden="true" className="mx-auto mb-4 text-gray-400 w-14 h-14 dark:text-gray-200" fill="none"
              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
@@ -24,10 +24,17 @@ export const DeleteDialog: FC<DeleteDialogProps> = ({
         <Styled.DialogTitle>
           Are you sure you want to delete this {puppyName} reservation?
         </Styled.DialogTitle>
-        <Styled.DialogDeleteBtn data-modal-toggle="popup-modal" type="button" onClick={handleDelete}>
+        <Styled.DialogDeleteBtn
+          data-modal-toggle="popup-modal"
+          type="button" onClick={handleDelete}
+          data-testid="delete-reservation">
           Yes, I'm sure
         </Styled.DialogDeleteBtn>
-        <Styled.DialogCancelBtn data-modal-toggle="popup-modal" type="button" onClick={handleClose}>
+        <Styled.DialogCancelBtn
+          data-modal-toggle="popup-modal"
+          type="button" onClick={handleClose}
+          data-testid="cancel-delete"
+        >
           No, cancel
         </Styled.DialogCancelBtn>
       </Styled.DialogContentSection>

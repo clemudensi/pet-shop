@@ -15,7 +15,8 @@ import {
   TableWrapper,
   ModalWrapper,
   ContainerFlex,
-  FilterBtn
+  FilterBtn,
+  H2Typography
 } from 'components';
 import { useGetWaitingList, useDebounced, useSortTable } from 'hooks';
 import { Entry } from 'types';
@@ -72,7 +73,7 @@ export const PetShop = () => {
     e.preventDefault();
     const newUuid = generateUuid();
 
-    const modifiedLastEntry = petShopEntries.map(item => {
+    const modifiedLastEntry = arrangeEntries.map(item => {
       if (item.id === lastEntryItem.id) {
         return {
           ...item,
@@ -95,6 +96,8 @@ export const PetShop = () => {
     }
 
     setPetShopEntries(sortByArrival(modifiedLastEntry.concat(reservation)));
+    setArrangeEntries(modifiedLastEntry.concat(reservation));
+    setFilterType(ServicedEntry.ALL);
 
     setEntry({
       firstName: '',
@@ -106,12 +109,13 @@ export const PetShop = () => {
   }, [petShopEntries, entry, arrangeEntries]);
 
   const handleRemoveEntry = (id: string) => {
-    const entries = petShopEntries.filter(e => e.id !== id);
-    setPetShopEntries(entries)
+    const entries = arrangeEntries.filter(e => e.id !== id);
+    setArrangeEntries(entries);
+    setPetShopEntries(sortByArrival(entries));
   }
 
   const handleServiceEntry = useCallback((id: string) => {
-    const servicedEntry = petShopEntries.map(item => {
+    const servicedEntry = arrangeEntries.map(item => {
       if (item.id === id) {
         return {
           ...item,
@@ -122,43 +126,38 @@ export const PetShop = () => {
       }
     });
 
-    setPetShopEntries(servicedEntry);
-  }, [petShopEntries]);
+    setArrangeEntries(servicedEntry);
+    setPetShopEntries(sortByArrival(servicedEntry));
+  }, [arrangeEntries]);
 
   useEffect(() => {
     if (data) {
       setPetShopEntries(sortByArrival(data));
-      setArrangeEntries(arrangeDataByEntry(petShopEntries));
+      setArrangeEntries(arrangeDataByEntry(data));
     }
   }, [data]);
 
   useEffect(() => {
-    setArrangeEntries(arrangeDataByEntry(petShopEntries));
-  }, [petShopEntries]);
-
-  useEffect(() => {
-    if (inputDebounced) {
-      setPetShopEntries(
-        matchSorter(
-          petShopEntries,
-          inputDebounced || '',
-          {keys: ['puppyName', 'owner', 'requestedService']}
-        )
-      )
-    }
-  }, [inputDebounced])
+    setPetShopEntries(
+      sortByArrival(matchSorter(
+        arrangeEntries,
+        inputDebounced,
+        {keys: ['puppyName', 'owner', 'requestedService']}
+      ))
+    )
+  }, [inputDebounced]);
 
   const handleFilterReservation = (filterType: string) => {
     setFilterType(filterType);
     switch (filterType) {
       case ServicedEntry.ALL:
-        setPetShopEntries(data && sortByArrival(data) || []);
+        setPetShopEntries(sortByArrival(arrangeEntries));
         break;
       case ServicedEntry.SERVICED:
-        setPetShopEntries(data && sortByArrival(data?.filter(e => e.serviced)) || []);
+        setPetShopEntries(sortByArrival(arrangeEntries?.filter(e => e.serviced)));
         break;
       case ServicedEntry.UNSERVICED:
-        setPetShopEntries(data && sortByArrival(data?.filter(e => !e.serviced)) || []);
+        setPetShopEntries(sortByArrival(arrangeEntries?.filter(e => !e.serviced)));
         break;
       default:
         return;
@@ -167,6 +166,7 @@ export const PetShop = () => {
 
   return (
     <>
+      <H2Typography>Pet Shop</H2Typography>
       <ContainerFlex>
         <Searchbar />
         <Button.Group>
@@ -208,7 +208,7 @@ export const PetShop = () => {
             width={52}
             height={52}
             hoverColor="green"
-            color="#2563eb"
+            color="#1f419f"
             onClick={onClick}
             transform={1.1}
           />

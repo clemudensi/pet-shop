@@ -1,6 +1,6 @@
 import * as Styled from './styles';
 import { DefaultButton, CenterItems, DropdownItem, GridCol2, GridSectionWrapper } from 'components';
-import { ChangeEvent, ChangeEventHandler, FC, FormEventHandler, MouseEvent } from 'react';
+import { ChangeEvent, FC, MouseEvent } from 'react';
 import { APPOINTMENT_TYPE } from 'consts';
 
 interface PetShopFormProps {
@@ -21,6 +21,7 @@ export const PetShopForm: FC<PetShopFormProps> = ({ handleOnchange, handleAddRes
       <Styled.FormInputContainer>
         <Styled.FormInput
           name="firstName" type="text" required onChange={handleOnchange} value={entry.firstName}
+          data-testid="firstName"
         />
         <Styled.FormInputLabel>First Name</Styled.FormInputLabel>
       </Styled.FormInputContainer>
@@ -28,6 +29,7 @@ export const PetShopForm: FC<PetShopFormProps> = ({ handleOnchange, handleAddRes
       <Styled.FormInputContainer>
         <Styled.FormInput
           name="lastName" type="text" required onChange={handleOnchange} value={entry.lastName}
+          data-testid="lastName"
         />
         <Styled.FormInputLabel>Last Name</Styled.FormInputLabel>
       </Styled.FormInputContainer>
@@ -35,6 +37,7 @@ export const PetShopForm: FC<PetShopFormProps> = ({ handleOnchange, handleAddRes
       <Styled.FormInputContainer>
         <Styled.FormInput
           name="puppyName" type="text" required onChange={handleOnchange} value={entry.puppyName}
+          data-testid="puppyName"
         />
         <Styled.FormInputLabel>Pet Name</Styled.FormInputLabel>
       </Styled.FormInputContainer>
@@ -44,6 +47,7 @@ export const PetShopForm: FC<PetShopFormProps> = ({ handleOnchange, handleAddRes
           <Styled.FormInputContainer>
             <Styled.FormInput
               name="arrival" type="datetime-local" required onChange={handleOnchange} value={entry.arrival}
+              data-testid="arrival"
             />
             <Styled.FormInputLabel>Date</Styled.FormInputLabel>
           </Styled.FormInputContainer>

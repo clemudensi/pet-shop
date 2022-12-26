@@ -1,6 +1,6 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+## Getting Started (Pet Shop App)
 
 First, run the development server:
 
@@ -12,23 +12,24 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.ts`. The page auto-updates as you edit the file.
+Due to time constraints the app would require the following, improvements
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+### Improvements
+* Adding unit test for for PetShop module and related components.
+* Adding e2e tests with cypress
+* Implement ErrorBoundary for application
+* making Modal component global which can be reused anywhere within the app
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### How the app works
+* On starting the application it fetches a list of reservations for the pet-shop
+* New reservations can be added to the list
+* The list has 3 major filters (all, serviced, unserviced)
+* Subsequently a search input exist, which allows searching of reservation against existing and added reservations.
+* Each reservation can be deleted and marked as serviced
+* By default the reservations are sorted by arrival dates but clicking each header column
+sorts the list by ascending or descending order of the column.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Architectural decision
+* emotion/styled with tailwind is used for UI design, twin-macro is used to combined both libraries efficiently
+* react-query is used for server-state management due to simplicity and scalability.
+* Alternatives include creating redux-toolkit, zustand, etc.
