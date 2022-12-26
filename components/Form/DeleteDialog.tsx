@@ -27,7 +27,7 @@ export const DeleteDialog: FC<DeleteDialogProps> = ({
         <Styled.DialogDeleteBtn
           data-modal-toggle="popup-modal"
           type="button" onClick={handleDelete}
-          data-testid="delete-reservation">
+          data-testid="remove-reservation">
           Yes, I'm sure
         </Styled.DialogDeleteBtn>
         <Styled.DialogCancelBtn

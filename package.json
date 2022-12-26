@@ -7,9 +7,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "cypress": "cypress open"
   },
   "dependencies": {
+    "-": "^0.0.1",
     "@emotion/css": "^11.10.5",
     "@emotion/react": "^11.10.5",
     "@emotion/server": "^11.10.0",
@@ -17,8 +19,10 @@
     "@next/font": "^13.0.7",
     "@tanstack/react-query": "^4.20.4",
     "@tanstack/react-table": "^8.7.4",
+    "D": "^1.0.0",
     "axios": "^1.2.1",
     "constate": "^3.3.2",
+    "cypress": "^12.2.0",
     "date-fns": "^2.29.3",
     "flowbite-react": "^0.3.7",
     "match-sorter": "^6.3.1",

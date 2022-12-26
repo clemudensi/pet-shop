@@ -66,7 +66,9 @@ export const PetShopForm: FC<PetShopFormProps> = ({ handleOnchange, handleAddRes
       </GridCol2>
 
       <CenterItems>
-        <DefaultButton onClick={handleAddReservation}>Add Reservation</DefaultButton>
+        <DefaultButton onClick={handleAddReservation} data-testid="submit-reservation">
+          Add Reservation
+        </DefaultButton>
       </CenterItems>
     </Styled.Form>
   )

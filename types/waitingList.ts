@@ -14,4 +14,16 @@ interface WaitingList {
     entries: Entry[];
 }
 
-export type { WaitingList, Entry };
+interface WaitingListForm {
+    input: {
+        firstName: string;
+        lastName: string;
+        puppyName: string;
+        arrival: string;
+    }
+    selected: {
+        requestedService: string;
+    }
+}
+
+export type { WaitingList, Entry, WaitingListForm };

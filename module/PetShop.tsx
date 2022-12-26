@@ -171,13 +171,14 @@ export const PetShop = () => {
         <Searchbar />
         <Button.Group>
           {
-            Object.values(ServicedEntry).map(entry =>
+            Object.values(ServicedEntry).map(filter =>
               <FilterBtn
-                key={entry}
-                selected={entry === filterType}
-                onClick={() => handleFilterReservation(entry)}
+                key={filter}
+                selected={filter === filterType}
+                onClick={() => handleFilterReservation(filter)}
+                data-testid={`filter-${filter}`}
                 type="button">
-                {entry}
+                {filter}
               </FilterBtn>
             )
           }
@@ -211,6 +212,7 @@ export const PetShop = () => {
             color="#1f419f"
             onClick={onClick}
             transform={1.1}
+            data-testid="add-reservation"
           />
         </CenterItems>
       </>

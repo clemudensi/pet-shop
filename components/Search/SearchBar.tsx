@@ -14,6 +14,8 @@ export const Searchbar = () => {
         placeholder="Search for pet reservations"
         onChange={onChange}
         value={search}
+        type="text"
+        name="search-input"
         data-testid="search-input"
       />
       <Styled.SearchCancelContainer>

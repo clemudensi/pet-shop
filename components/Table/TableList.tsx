@@ -54,13 +54,13 @@ export const TableList: FC<TableListProps> = ({
                     hoverColor="green"
                     color={serviced ? 'green' : undefined}
                     onClick={() => handleServiceEntry(id)}
-                    data-testid="serviced"
+                    data-testid={`${serviced ? 'serviced' : 'unserviced'}`}
                   />
                   <TrashIcon
                     width={16} height={16}
                     hoverColor="red"
                     onClick={() => onClick(row.original)}
-                    data-testid="delete-entry"
+                    data-testid="delete-reservation"
                   />
                 </Styled.TableData>
               </Styled.RowData>
