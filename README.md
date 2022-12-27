@@ -10,13 +10,16 @@ npm run dev
 yarn dev
 ```
 
+test commands
+Unit test: `yarn jest`
+e2e: `yarn cypress`
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 Due to time constraints the app would require the following, improvements
 
 ### Improvements
 * Adding unit test for for PetShop module and related components.
-* Adding e2e tests with cypress
 * Implement ErrorBoundary for application
 * making Modal component global which can be reused anywhere within the app
 
