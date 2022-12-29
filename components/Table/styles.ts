@@ -22,7 +22,7 @@ export const HeadRow = tw.tr``;
 export const HeadData = tw.th`py-6 px-6`;
 
 export const RowData = styled.tr(({ isServiced }: {isServiced: boolean}) => [
-  tw`bg-white border-b dark:border-gray-700 hover:bg-gray-50`,
+  tw`bg-white border-b dark:border-gray-700 hover:bg-gray-50 hover:shadow-lg`,
   isServiced ? tw`bg-neutral-300 hover:border-blue-500 hover:bg-neutral-300` : tw`dark:bg-gray-800 dark:hover:bg-gray-600`
 ]);
 

@@ -11,7 +11,7 @@ export const TableWrapper: FC<{children: React.ReactNode, sortTable: Table<Entry
    sortTable
 }) => {
   return (
-    <Styled.TableContainer>
+    <Styled.TableContainer data-testid="pet-shop">
       <Styled.Table>
         <Styled.Head>
           {sortTable?.getHeaderGroups().map((headerGroup: { id: React.Key | null | undefined; headers: any[]; }) => (

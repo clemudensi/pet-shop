@@ -57,7 +57,7 @@ export const SvgContainer = styled.div<{
   height?: number,
   width?: number,
   hoverColor?: string,
-  transform: number,
+  transform?: number,
 }>`
   height: auto;
   width: auto;

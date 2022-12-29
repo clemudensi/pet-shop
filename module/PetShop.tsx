@@ -6,7 +6,6 @@ import {
   useMemo,
   useEffect,
 } from 'react';
-import { matchSorter } from 'match-sorter';
 import {
   CenterItems,
   PetShopForm,
@@ -20,7 +19,7 @@ import {
 } from 'components';
 import { useGetWaitingList, useDebounced, useSortTable } from 'hooks';
 import { Entry } from 'types';
-import { generateUuid, sortByArrival, arrangeDataByEntry } from 'utils';
+import { generateUuid, sortByArrival, arrangeDataByEntry, filterByServiced, searchedResult } from 'utils';
 import { useSearchContext } from 'context';
 import { Searchbar } from '../components/Search/SearchBar';
 import { ServicedEntry } from '../enums';
@@ -37,7 +36,7 @@ export const PetShop = () => {
   });
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [petShopEntries, setPetShopEntries] = useState<Entry[]>([]);
-  const [arrangeEntries, setArrangeEntries] = useState<Entry[]>([]);
+  const [temporaryStorage, setTemporaryStorage] = useState<Entry[]>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filterType, setFilterType] = useState<string>('');
 
@@ -46,8 +45,7 @@ export const PetShop = () => {
   const waitingList = useGetWaitingList(inputDebounced);
 
   const { data } = waitingList;
-
-  const sortTable: Table<Entry> = petShopEntries && useSortTable(petShopEntries, sorting, setSorting)
+  const sortTable: Table<Entry> = petShopEntries && useSortTable(petShopEntries, sorting, setSorting);
 
   const handleOnchange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setEntry(prevState => ({
@@ -65,15 +63,15 @@ export const PetShop = () => {
   };
 
   const lastEntryItem = useMemo(() =>
-      arrangeEntries[arrangeEntries?.length - 1],
-    [arrangeEntries]
+      temporaryStorage[temporaryStorage?.length - 1],
+    [temporaryStorage]
   );
 
   const handleAddReservation = useCallback((e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const newUuid = generateUuid();
 
-    const modifiedLastEntry = arrangeEntries.map(item => {
+    const modifiedLastEntry = temporaryStorage.map(item => {
       if (item.id === lastEntryItem.id) {
         return {
           ...item,
@@ -96,7 +94,7 @@ export const PetShop = () => {
     }
 
     setPetShopEntries(sortByArrival(modifiedLastEntry.concat(reservation)));
-    setArrangeEntries(modifiedLastEntry.concat(reservation));
+    setTemporaryStorage(modifiedLastEntry.concat(reservation));
     setFilterType(ServicedEntry.ALL);
 
     setEntry({
@@ -106,16 +104,16 @@ export const PetShop = () => {
       arrival: '',
       requestedService: '',
     });
-  }, [petShopEntries, entry, arrangeEntries]);
+  }, [petShopEntries, entry, temporaryStorage]);
 
   const handleRemoveEntry = (id: string) => {
-    const entries = arrangeEntries.filter(e => e.id !== id);
-    setArrangeEntries(entries);
+    const entries = temporaryStorage.filter(e => e.id !== id);
+    setTemporaryStorage(entries);
     setPetShopEntries(sortByArrival(entries));
   }
 
   const handleServiceEntry = useCallback((id: string) => {
-    const servicedEntry = arrangeEntries.map(item => {
+    const servicedEntry = temporaryStorage.map(item => {
       if (item.id === id) {
         return {
           ...item,
@@ -126,24 +124,20 @@ export const PetShop = () => {
       }
     });
 
-    setArrangeEntries(servicedEntry);
+    setTemporaryStorage(servicedEntry);
     setPetShopEntries(sortByArrival(servicedEntry));
-  }, [arrangeEntries]);
+  }, [temporaryStorage]);
 
   useEffect(() => {
     if (data) {
       setPetShopEntries(sortByArrival(data));
-      setArrangeEntries(arrangeDataByEntry(data));
+      setTemporaryStorage(arrangeDataByEntry(data));
     }
   }, [data]);
 
   useEffect(() => {
     setPetShopEntries(
-      sortByArrival(matchSorter(
-        arrangeEntries,
-        inputDebounced,
-        {keys: ['puppyName', 'owner', 'requestedService']}
-      ))
+      searchedResult(temporaryStorage, inputDebounced)
     )
   }, [inputDebounced]);
 
@@ -151,13 +145,13 @@ export const PetShop = () => {
     setFilterType(filterType);
     switch (filterType) {
       case ServicedEntry.ALL:
-        setPetShopEntries(sortByArrival(arrangeEntries));
+        setPetShopEntries(sortByArrival(temporaryStorage));
         break;
       case ServicedEntry.SERVICED:
-        setPetShopEntries(sortByArrival(arrangeEntries?.filter(e => e.serviced)));
+        setPetShopEntries(sortByArrival(filterByServiced(temporaryStorage, ServicedEntry.SERVICED)));
         break;
       case ServicedEntry.UNSERVICED:
-        setPetShopEntries(sortByArrival(arrangeEntries?.filter(e => !e.serviced)));
+        setPetShopEntries(sortByArrival(filterByServiced(temporaryStorage, ServicedEntry.UNSERVICED)));
         break;
       default:
         return;

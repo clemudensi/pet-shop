@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import * as Styled from './styles';
 import { Entry } from 'types';
-import { CheckIcon, TrashIcon, DeleteDialog, ModalWrapper, TableBody } from 'components';
+import { CheckIcon, TrashIcon, DeleteDialog, ModalWrapper } from 'components';
 import { flexRender } from '@tanstack/react-table';
 import { TableListProps, CellProps } from 'types';
 
@@ -26,7 +26,7 @@ export const TableList: FC<TableListProps> = ({
   const handleDelete = () => {
     setIsModalOpen(!isModalOpen);
     handleRemoveEntry(entryItem.id)
-  }
+  };
 
   return (
     <>
@@ -36,7 +36,7 @@ export const TableList: FC<TableListProps> = ({
         .map(row => {
           const { original: {serviced, id} } = row;
           return (
-            <TableBody key={row.id} data-testid="reservation-list">
+            <Styled.TableBody key={row.id} data-testid="reservation-list">
               <Styled.RowData key={row.id} isServiced={serviced}>
                 {row.getVisibleCells().map((cell: CellProps) => {
                   return (
@@ -64,7 +64,7 @@ export const TableList: FC<TableListProps> = ({
                   />
                 </Styled.TableData>
               </Styled.RowData>
-            </TableBody>
+            </Styled.TableBody>
           )
         })}
       <ModalWrapper isModalOpen={isModalOpen} onClose={onClose}>

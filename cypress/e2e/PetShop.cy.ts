@@ -12,7 +12,6 @@ const reservation = {
 
 describe('Pet Shop', () => {
     beforeEach(() => {
-        // cy.visit('http://localhost:3000')
         cy.intercept({
             method: 'GET',
             url: 'http://localhost:3000/waiting-list.json'
@@ -42,7 +41,6 @@ describe('Pet Shop', () => {
         });
 
         it('removes reservation', () => {
-            // const selector = '[data-testid="delete-reservation"]';
             cy.get('[data-testid="delete-reservation"]').eq(0).click();
             cy.get('[data-testid="remove-reservation"]').click();
             cy.get('[data-testid="reservation-list"]').its('length').should('eq', 3);

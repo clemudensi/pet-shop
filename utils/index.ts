@@ -1,4 +1,6 @@
 import { Entry } from '../types';
+import { ServicedEntry } from 'enums';
+import { matchSorter } from 'match-sorter';
 
 export const generateUuid = () => {
   let s4 = () => {
@@ -41,3 +43,22 @@ export const arrangeDataByEntry = (entries: Entry[]): Entry[] => {
 
   return arrangedEntry;
 }
+
+export const filterByServiced = (reservations: Entry[], serviceType: string) => {
+  switch (serviceType) {
+    case ServicedEntry.SERVICED:
+      return reservations.filter(e => e.serviced);
+    case ServicedEntry.UNSERVICED:
+      return reservations.filter(e => !e.serviced);
+    default:
+      return reservations;
+  }
+};
+
+export const searchedResult = (reservations: Entry[], input: string) => {
+  return sortByArrival(matchSorter(
+    reservations,
+    input,
+    {keys: ['puppyName', 'owner', 'requestedService']}
+  ));
+};

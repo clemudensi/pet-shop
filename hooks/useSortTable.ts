@@ -2,7 +2,8 @@ import { useMemo } from 'react';
 import {
   ColumnDef,
   getCoreRowModel,
-  getSortedRowModel, OnChangeFn,
+  getSortedRowModel,
+  OnChangeFn,
   SortingState,
   useReactTable,
 } from '@tanstack/react-table'
